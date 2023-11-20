@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "pizza")
+@EntityListeners({AuditingEntityListener.class})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,4 +29,17 @@ public class PizzaEntity {
     private Boolean vegan;
     @Column(columnDefinition = "smallint", nullable = false)
     private Boolean available;
+
+    @Override
+    public String toString() {
+        return "PizzaEntity{" +
+                "idPizza=" + idPizza +
+                ", name='" + name + '\'' +
+                ", description='" + descripcion + '\'' +
+                ", price=" + price +
+                ", vegetarian=" + vegetarian +
+                ", vegan=" + vegan +
+                ", available=" + available +
+                '}';
+    }
 }
