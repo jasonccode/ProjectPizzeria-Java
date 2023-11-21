@@ -1,25 +1,32 @@
 package com.project.pizza.service;
 
 import com.project.pizza.persistence.entity.PizzaEntity;
+import com.project.pizza.persistence.repository.PizzaPagSortRepository;
 import com.project.pizza.persistence.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class PizzaService {
     private final PizzaRepository pizzaRepository;
+    private final PizzaPagSortRepository pizzaPagSortRepository;
 
     @Autowired
-    public PizzaService(PizzaRepository pizzaRepository) {
+    public PizzaService(PizzaRepository pizzaRepository, PizzaPagSortRepository pizzaPagSortRepository) {
         this.pizzaRepository = pizzaRepository;
+        this.pizzaPagSortRepository = pizzaPagSortRepository;
     }
 
-    public List<PizzaEntity> getAll() {
-        return this.pizzaRepository.findAll();
+    public Page<PizzaEntity> getAll(int page, int elements) {
+        Pageable pageRequest = PageRequest.of(page, elements);
+        return this.pizzaPagSortRepository.findAll(pageRequest);
     }
+
 
     public List<PizzaEntity> getAvailable() {
         System.out.println(this.pizzaRepository.countByVeganTrue());
@@ -53,6 +60,7 @@ public class PizzaService {
     public boolean exists(int idPizza) {
         return this.pizzaRepository.existsById(idPizza);
     }
+
     public List<PizzaEntity> getCheapest(double price) {
         return this.pizzaRepository.findTop3ByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(price);
     }
