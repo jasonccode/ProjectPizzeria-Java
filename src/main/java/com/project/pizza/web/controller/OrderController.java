@@ -3,6 +3,7 @@ package com.project.pizza.web.controller;
 import com.project.pizza.persistence.entity.OrderEntity;
 import com.project.pizza.persistence.projection.OrderSummary;
 import com.project.pizza.service.OrderService;
+import com.project.pizza.service.dto.RandomOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
