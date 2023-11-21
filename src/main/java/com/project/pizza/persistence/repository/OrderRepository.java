@@ -3,6 +3,7 @@ package com.project.pizza.persistence.repository;
 import com.project.pizza.persistence.entity.OrderEntity;
 import com.project.pizza.persistence.projection.OrderSummary;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 public interface OrderRepository extends ListCrudRepository<OrderEntity, Integer> {
     List<OrderEntity> findAllByDateAfter(LocalDateTime date);
@@ -29,4 +31,6 @@ public interface OrderRepository extends ListCrudRepository<OrderEntity, Integer
             "GROUP BY po.id_order, cu.id_customer, po.date, po.total", nativeQuery = true)
     OrderSummary findSummary(int orderId);
 
+    @Procedure(value = "take_random_pizza_order", outputParameterName = "order_taken")
+    boolean saveRandomOrder(@Param("id_customer") String idCustomer, @Param("method") String method);
 }

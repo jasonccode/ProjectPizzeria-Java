@@ -3,6 +3,8 @@ package com.project.pizza.service;
 import com.project.pizza.persistence.entity.PizzaEntity;
 import com.project.pizza.persistence.repository.PizzaPagSortRepository;
 import com.project.pizza.persistence.repository.PizzaRepository;
+import com.project.pizza.service.dto.UpdatePizzaPriceDto;
+import com.project.pizza.service.exception.EmailApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -10,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -61,6 +65,16 @@ public class PizzaService {
         this.pizzaRepository.deleteById(idPizza);
     }
 
+    @Transactional(noRollbackFor = EmailApiException.class, propagation = Propagation.MANDATORY)
+    public void updatePrice(UpdatePizzaPriceDto dto) {
+        this.pizzaRepository.updatePrice(dto);
+        this.sendEmail();
+    }
+
+    private void sendEmail() {
+        throw new EmailApiException();
+    }
+
     public boolean exists(int idPizza) {
         return this.pizzaRepository.existsById(idPizza);
     }
@@ -68,5 +82,6 @@ public class PizzaService {
     public List<PizzaEntity> getCheapest(double price) {
         return this.pizzaRepository.findTop3ByAvailableTrueAndPriceLessThanEqualOrderByPriceAsc(price);
     }
+
 
 }
