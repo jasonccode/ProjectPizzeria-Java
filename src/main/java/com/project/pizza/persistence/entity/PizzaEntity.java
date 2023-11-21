@@ -20,7 +20,7 @@ public class PizzaEntity {
     @Column(nullable = false, length = 50, unique = true)
     private String name;
     @Column(nullable = false, length = 50, unique = true)
-    private String descripcion;
+    private String description;
     @Column(nullable = false, columnDefinition = "Decimal(5,2)")
     private Double price;
     @Column(columnDefinition = "smallint")
@@ -35,7 +35,7 @@ public class PizzaEntity {
         return "PizzaEntity{" +
                 "idPizza=" + idPizza +
                 ", name='" + name + '\'' +
-                ", description='" + descripcion + '\'' +
+                ", description='" + description + '\'' +
                 ", price=" + price +
                 ", vegetarian=" + vegetarian +
                 ", vegan=" + vegan +
