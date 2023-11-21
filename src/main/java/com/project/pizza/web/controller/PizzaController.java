@@ -1,8 +1,6 @@
 package com.project.pizza.web.controller;
 
-import com.project.pizza.persistence.entity.OrderEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.project.pizza.persistence.entity.PizzaEntity;
 import com.project.pizza.service.PizzaService;
@@ -22,7 +20,7 @@ public class PizzaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<PizzaEntity>> getAll(@RequestParam(defaultValue = 0) int page, @RequestParam(defaultValue = "8") int elements) {
+    public ResponseEntity<Page<PizzaEntity>> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int elements) {
         return ResponseEntity.ok(this.pizzaService.getAll(page, elements));
     }
 
@@ -32,8 +30,11 @@ public class PizzaController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<PizzaEntity>> getAvailable() {
-        return ResponseEntity.ok(this.pizzaService.getAvailable());
+    public ResponseEntity<Page<PizzaEntity>> getAvailable(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "8") int elements,
+                                                          @RequestParam(defaultValue = "price") String sortBy,
+                                                          @RequestParam(defaultValue = "ASC") String sortDirection) {
+        return ResponseEntity.ok(this.pizzaService.getAvailable(page, elements, sortBy, sortDirection));
     }
 
     @GetMapping("/name/{name}")
