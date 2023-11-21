@@ -1,5 +1,6 @@
 package com.project.pizza.web.controller;
 
+import com.project.pizza.persistence.entity.OrderEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.project.pizza.persistence.entity.PizzaEntity;
@@ -49,6 +50,10 @@ public class PizzaController {
         return ResponseEntity.ok(this.pizzaService.getWithout(ingredient));
     }
 
+    @GetMapping("/cheapest/{price}")
+    public ResponseEntity<List<PizzaEntity>> getCheapestPizzas(@PathVariable double price) {
+        return ResponseEntity.ok(this.pizzaService.getCheapest(price));
+    }
 
     @PostMapping
     public ResponseEntity<PizzaEntity> add(@RequestBody PizzaEntity pizza) {
